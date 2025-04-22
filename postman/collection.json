@@ -1,0 +1,678 @@
+{
+	"info": {
+		"_postman_id": "0c5e39fb-5361-42ee-a2e3-4b572ef0b93d",
+		"name": "QA TECH TEST",
+		"description": "### Purpose\n\nThis collection includes automated tests for the endpoints of a RESTful API. The API is used for managing posts, comments, and profile information. The collection is built using Postman and tests various HTTP methods such as GET, POST, PUT, and DELETE.\n\n### Endpoints Covered\n\n- **GET /posts**: Fetch a list of all posts.\n    \n- **GET /posts/{id}**: Fetch a single post by its ID.\n    \n- **POST /posts**: Create a new post.\n    \n- **PUT /posts/{id}**: Update an existing post by its ID.\n    \n- **DELETE /posts/{id}**: Delete a post by its ID.\n    \n- **GET /comments**: Fetch a list of all comments.\n    \n- **GET /comments/{id}**: Fetch a single comment by its ID.\n    \n- **POST /comments**: Create a new comment.\n    \n- **PUT /comments/{id}**: Update an existing comment by its ID.\n    \n- **DELETE /comments/{id}**: Delete a comment by its ID.\n    \n- **GET /profile**: Fetch the profile information.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "16452037"
+	},
+	"item": [
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "List Posts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () =>{",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response body should be a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"pm.test(\"Response is an array\", () => {",
+									"    pm.expect(Array.isArray(pm.response.json())).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Each post has id, title, and author\", () => {",
+									"    pm.response.json().forEach(post => {",
+									"        pm.expect(post).to.have.property('id');",
+									"        pm.expect(post).to.have.property('title');",
+									"        pm.expect(post).to.have.property('author');",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"IDs are unique\", () => {",
+									"    const responseData = pm.response.json();",
+									"    const ids = responseData.map(post => post.id);",
+									"    const uniqueIds = new Set(ids);",
+									"    pm.expect(uniqueIds.size).to.equal(ids.length);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () =>{",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response body should be a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"pm.test(\"Response contains new post properties\", () => {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.have.property('id');",
+									"    pm.expect(responseData).to.have.property('title');",
+									"    pm.expect(responseData).to.have.property('author');",
+									"});",
+									"",
+									"pm.test(\"New post ID is not empty\", () => {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.id).to.not.be.empty;",
+									"});",
+									"",
+									"pm.test(\"Title has a minimum length\", () => {",
+									"    pm.expect(pm.response.json().title).to.have.length.of.at.least(3);",
+									"});",
+									"",
+									"// Store the new post ID in an environment variable for future use.",
+									"var responseData = pm.response.json();",
+									"var postId = responseData.id;",
+									"pm.environment.set(\"postId\", postId);",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Post 1\",\n    \"author\": \"Author 1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response body should be a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"pm.test(\"Response body has required properties\", () => {",
+									"    pm.expect(pm.response.json()).to.have.property('id');",
+									"    pm.expect(pm.response.json()).to.have.property('title');",
+									"    pm.expect(pm.response.json()).to.have.property('author');",
+									"});",
+									"",
+									"pm.test(\"ID in URL matches ID in response\", () => {",
+									"    const responseData = pm.response.json();",
+									"    const pathSegments = pm.request.url.path;",
+									"    const idFromUrl = pathSegments[pathSegments.length - 1];",
+									"    pm.expect(responseData.id).to.equal(idFromUrl);",
+									"});",
+									"",
+									"pm.test(\"Title and author are not empty\", () => {",
+									"    pm.expect(pm.response.json().title).to.not.be.empty;",
+									"    pm.expect(pm.response.json().author).to.not.be.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/posts/{{postId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () =>{",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response body should be a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody();",
+									"});  ",
+									"",
+									"pm.test(\"Response contains updated post properties\", () => {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.have.property('id');",
+									"    pm.expect(responseData).to.have.property('title');",
+									"    pm.expect(responseData).to.have.property('author');",
+									"});",
+									"",
+									"pm.test(\"Post is updated correctly\", () => {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.title).to.equal(\"New title by PUT\");",
+									"    pm.expect(responseData.author).to.equal(\"New author by PUT\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"New title by PUT\",\n    \"author\": \"New author by PUT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/posts/{{postId}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "List Comments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response body should be a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"pm.test(\"Each comment has id, body, and postId\", () => {",
+									"    pm.response.json().forEach(comment => {",
+									"        pm.expect(comment).to.have.property('id');",
+									"        pm.expect(comment).to.have.property('body');",
+									"        pm.expect(comment).to.have.property('postId');",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"IDs are unique\", () => {",
+									"    const responseData = pm.response.json();",
+									"    const ids = responseData.map(post => post.id);",
+									"    const uniqueIds = new Set(ids);",
+									"    pm.expect(uniqueIds.size).to.equal(ids.length);",
+									"});",
+									"",
+									"pm.test(\"At least one comment exists\", () => {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.length).to.be.at.least(1);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/comments"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response body should be a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"pm.test(\"Response body has required properties\", () => {",
+									"    pm.expect(pm.response.text()).to.include(\"postId\");",
+									"    pm.expect(pm.response.json()).to.have.property(\"id\");",
+									"    pm.expect(pm.response.json()).to.have.property(\"body\");",
+									"});",
+									"",
+									"pm.test(\"Body has a minimum length\", () => {",
+									"    pm.expect(pm.response.json().body).to.have.lengthOf.at.least(5);",
+									"});",
+									"",
+									"// Store the new comment ID in an environment variable for future use.",
+									"var responseData = pm.response.json();",
+									"var commentId = responseData.id;",
+									"pm.environment.set(\"commentId\", commentId);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"body\": \"some comment\",\n    \"postId\": \"{{postId}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/comments"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Comment by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response body should be a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"pm.test(\"Response body has required properties\", () => {",
+									"    const comment = pm.response.json();",
+									"    pm.expect(comment).to.have.property('id');",
+									"    pm.expect(comment).to.have.property('body');",
+									"    pm.expect(comment).to.have.property('postId');",
+									"});",
+									"",
+									"pm.test(\"ID in URL matches ID in response\", () => {",
+									"    const responseData = pm.response.json();",
+									"    const pathSegments = pm.request.url.path;",
+									"    const idFromUrl = pathSegments[pathSegments.length - 1];",
+									"    pm.expect(responseData.id).to.equal(idFromUrl);",
+									"});",
+									"",
+									"pm.test(\"Body is not empty and PostId is defined\", () => {",
+									"    const res = pm.response.json();",
+									"    pm.expect(res.body).to.be.a('string').and.to.not.be.empty;",
+									"    pm.expect(res).to.have.property('postId');",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/comments/{{commentId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response body should be a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"pm.test(\"Response contains updated comment properties\", () => {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.have.property('id');",
+									"    pm.expect(responseData).to.have.property('body');",
+									"    pm.expect(responseData).to.have.property('postId');",
+									"});",
+									"",
+									"pm.test(\"Post is updated correctly\", () => {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.body).to.equal(\"New body by PUT\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"body\": \"New body by PUT\",\n    \"postId\": \"{{postId}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/comments/{{commentId}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Get Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response body should be a valid JSON\", () => {",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"pm.test(\"Response body has property 'name'\", () => {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data).to.have.property(\"name\");",
+									"});",
+									"",
+									"pm.test(\"Name is not empty\", () => {",
+									"    const name = pm.response.json().name;",
+									"    pm.expect(name).to.be.a(\"string\").that.is.not.empty;",
+									"});",
+									"",
+									"pm.test(\"Name has a minimum length\", () => {",
+									"    pm.expect(pm.response.json().name).to.have.length.of.at.least(3);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/profile"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clean-up",
+			"item": [
+				{
+					"name": "Delete Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () =>{",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Comment is deleted\", () => {",
+									"    pm.sendRequest({",
+									"        url: `{{base_url}}/posts/${pm.request.url.variables.get('id')}`,",
+									"        method: 'GET'",
+									"    }, (res) => {",
+									"        pm.expect(res.code).to.eql(\"ENOTFOUND\"); ",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/comments/{{commentId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () =>{",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Post is deleted\", () => {",
+									"    pm.sendRequest({",
+									"        url: `{{base_url}}/posts/${pm.request.url.variables.get('id')}`,",
+									"        method: 'GET'",
+									"    }, (res) => {",
+									"        pm.expect(res.code).to.eql(\"ENOTFOUND\"); ",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/posts/{{postId}}"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
