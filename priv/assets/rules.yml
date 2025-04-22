@@ -1,0 +1,45 @@
+rules:
+  - type: FreeRule
+    product: GR1
+    buy: 1
+    free: 1
+
+  - type: FreeRule
+    product: SR1
+    buy: 1
+    free: 1
+
+  - type: FreeRule
+    product: CF1
+    buy: 1
+    free: 1
+
+  - type: ReducedPriceRule
+    product: GR1
+    min_quantity: 3
+    new_price: 2.50
+
+  - type: ReducedPriceRule
+    product: SR1
+    min_quantity: 3
+    new_price: 4.50
+
+  - type: ReducedPriceRule
+    product: CF1
+    min_quantity: 3
+    new_price: 10.00
+
+  - type: FractionPriceRule
+    product: GR1
+    min_quantity: 3
+    percentage: 50.00
+  
+  - type: FractionPriceRule
+    product: SR1
+    min_quantity: 3
+    percentage: 50.00
+  
+  - type: FractionPriceRule
+    product: CF1
+    min_quantity: 3
+    percentage: 50.00
