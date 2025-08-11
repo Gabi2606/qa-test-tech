@@ -1,5 +1,13 @@
+## Candidate's Note
 
+This README contains the original instructions of the technical test (unchanged).  
+To see the documentation of my work, you can access:  
+- 📂 [Part 1 - Test Cases](./Parte1_TestCases/README.md)  
+- 📂 [Part 2 - API Tests](./Parte2_API_Tests/README.md)  
+  
+Each folder includes its own README with detailed explanations, structure, and execution steps.
 
+---
 
 # QA Engineer Challenge
 Thank you for your interest in Kantox, we are delighted you are considering joining our team.
