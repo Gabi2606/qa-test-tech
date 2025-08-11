@@ -2,8 +2,8 @@
 
 This README contains the original instructions of the technical test (unchanged).  
 To see the documentation of my work, you can access:  
-- 📂 [Part 1 - Test Cases](./Parte1_TestCases/README.md)  
-- 📂 [Part 2 - API Tests](./Parte2_API_Tests/README.md)  
+- 📂 [Part 1 - Test Cases](./part1-test-case-creation/README.md)   
+- 📂 [Part 2 - API Tests](./part2-api-test/postman/README.md)   
   
 Each folder includes its own README with detailed explanations, structure, and execution steps.
 
