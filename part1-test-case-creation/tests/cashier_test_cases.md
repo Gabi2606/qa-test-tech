@@ -6,7 +6,7 @@
 **Description:** Verify that the system correctly calculates the price of a product that does not trigger any discount rules.  
 **Preconditions:**
 - Product `SR1` (Strawberries) registered with price £5.00
-- No rules apply with only 1 unit
+- No rules apply with only 1 unit  
 **Steps:**  
     1. Start an empty cart.  
     2. Add 1 unit of product `SR1`.  
@@ -23,7 +23,7 @@
 **Description:** Verify that when adding 2 units of `GR1`, only 1 is charged due to the “buy one get one free” rule.  
 **Preconditions:**
 - Product `GR1` (Green Tea) registered with price £3.11
-- Active FreeRule: "Buy 1 get 1 free"
+- Active FreeRule: "Buy 1 get 1 free"  
 **Steps:**.  
     1. Start empty cart.  
     2. Add 2 units of `GR1`.  
@@ -92,6 +92,7 @@
 **Preconditions:**. 
 - Product GR1 with price £3.11
 - Active rule: Buy 1 Get 1 Free
+
 **Steps:**.  
     1. Start an empty cart.  
     2. Add 3 units of product `GR1`.  
@@ -108,7 +109,7 @@
 **Description:** Verify that the discount is applied to all units if the minimum is exceeded.
 **Preconditions:**   
 - Product CF1 with price £11.23
-- Active rule: 3 or more units → 50.00% of the price
+- Active rule: 3 or more units → 50.00% of the price  
 **Steps:**.  
     1. Start an empty cart.  
     2. Add 4 units of product `CF1`.  
@@ -125,7 +126,7 @@
 **Description:** Verify that a product without any rules is charged at the regular price.   
 **Preconditions:**. 
 - Product XX1, price £2.00
-- No rules exist for XX1
+- No rules exist for XX1  
 **Steps:**.  
     1. Start an empty cart.  
     2. Add 2 units of product `XX1`.  
