@@ -18,7 +18,7 @@
 ---
 
 ### Test Case ID: TC002  
-**Categories** Basic Functional (Happy Path); Equivalent Partition (valid).  
+**Categories** Equivalent Partition (valid).  
 **Title:** FreeRule - Buy 2 Green Teas, Get 1 Free.  
 **Description:** Verify that when adding 2 units of `GR1`, only 1 is charged due to the “buy one get one free” rule.  
 **Preconditions:**
@@ -147,5 +147,22 @@
 **Expected Result:**. 
 - Total: £0.00
 - No errors, valid but empty cart
+
+---
+
+
+### Test Case ID: TC010 
+**Categories** Basic Functional (Happy Path).
+**Title:** FreeRule - Buy 1 Green Teas, Get 1 Free.  
+**Description:** Verify that when adding 1 unit of `GR1`, get 1 free.
+- Product `GR1` (Green Tea) registered with price £3.11
+- Active FreeRule: "Buy 1 get 1 free"  
+**Steps:**.  
+    1. Start empty cart.  
+    2. Add 1 unit of `GR1`.  
+    3. Calculate the total.   
+**Expected Result:**. 
+- Total: £3.11. 
+- 1 unit charged, 1 unit free. 
 
 ---

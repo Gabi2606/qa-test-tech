@@ -61,6 +61,7 @@ The test cases are organized according to common ISTQB categories to ensure thor
 - TC003: ReducedPriceRule - Buy 3 Strawberries
 - TC004: FractionPriceRule - Buy 3 Coffees
 - TC005: Combine products with and without rules
+- TC010: Free Rule - Buy 1 Green Teas, Get 1 Free
 
 **Equivalent Partition (valid/invalid):**
 
