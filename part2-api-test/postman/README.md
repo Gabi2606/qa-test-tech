@@ -48,11 +48,11 @@ The server will run at http://localhost:3000.
 
 To run the tests in this Postman collection, follow these steps:
 
-1. Make sure to create the environment variable:
+1. Import the file collection.json and environment.json
 
-    Create an environment variable named base_url with the value http://localhost:3000.
+    With it will create an environment variable named base_url with the value http://localhost:3000 and two variables: postId and commentsId
 
-    This will be used in the endpoints as {{base_url}} to point to the correct server.
+    This will be used in the endpoints.
 
 2. Run the Tests:
 
