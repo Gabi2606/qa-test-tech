@@ -29,8 +29,8 @@
     2. Add 2 units of `GR1`.  
     3. Calculate the total.   
 **Expected Result:**. 
-- Total: £3.11. 
-- 1 unit charged, 1 unit free. 
+- Total: £6.22. 
+- 2 unit charged, 1 unit free. 
 
 ---
 
